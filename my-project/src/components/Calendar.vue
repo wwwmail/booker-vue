@@ -13,7 +13,7 @@
             <span class="next" @click="addMonth"><icon name="angle-double-right"></icon></span>
 
 
-            <p>Your selected date is : {{choosenDate}}</p>
+            <p>Your selected date is : {{choosenDate}} {{dateToUnix(choosenDate)}}</p>
         </div>
         <ul class="weekdays">
             <li v-for="day in days">{{day}}</li>
@@ -22,6 +22,7 @@
             <li v-for="blank in firstDayOfMonth">&nbsp;</li>
             <li v-for="date in daysInMonth" :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear, 'chosen-day': choosenDate == date + ' ' + month + ' ' + year}" @click="chooseData(date, month, year)">
                 <span>{{date}}</span>
+                
             </li>
         </ul>
     </div>
@@ -42,7 +43,7 @@ export default {
             today: this.$moment(),
             dateContext: this.$moment(),
             days: ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT'],
-
+            events:[{'id':1,'time':'11:00 - 12:00'},{'id':2,'time':'12:00 - 13:00'},{'id':3,'time':'13:00 - 14:00'}],
             choosenDate: '',
         }
     },
@@ -60,6 +61,11 @@ export default {
 
         chooseData: function(date, month, year) {
             this.choosenDate = date + ' ' + month + ' ' + year;
+        },
+
+        dateToUnix(date){
+          return Date.parse(date)/1000;//.getTime()/1000;
+
         }
 
 
@@ -136,6 +142,10 @@ ul.dates li.current-day {
     border: 2px solid #673AB7;
     color: #673AB7;
     font-weight: bold;
+}
+
+ul.dates li {
+  height: 100px;
 }
 
 .info {

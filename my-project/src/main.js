@@ -14,12 +14,14 @@ import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 Vue.component('icon', Icon)
 Vue.config.productionTip = false
+import store from './store'
 
 Vue.use(require('vue-moment'));
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -17,6 +17,24 @@ Vue.config.productionTip = false
 import store from './store'
 
 Vue.use(require('vue-moment'));
+
+
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+
+Vue.use(VueAxios, axios);
+
+
+const vueConfig = require('vue-config')
+const configs = {
+  API: 'http://booker-rest.test',
+  //API: 'http://192.168.0.15/~user4/php7/bookshop',
+  expiresCookie: '1h' // It's better to require a config file
+}
+
+Vue.use(vueConfig, configs)
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

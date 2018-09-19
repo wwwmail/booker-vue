@@ -1,11 +1,15 @@
 
-
 <template>
 
 <div class="container">
+    <div class="row">
+        <div class="col-4">room 1</div>
+        <div class="col-4"> room 2</div>
+        <div class="col-4"> room 3</div>
+    </div>
     <div class="calendar">
-        Calendar
-        <div class="calendar-header">
+
+        <div class="calendar-header  row">
             <span class="prev" @click="subtractMonth"><icon name="angle-double-left"></icon></span>
 
             <span class="info">{{month + ' - ' + year}}</span>
@@ -15,16 +19,28 @@
 
             <p>Your selected date is : {{choosenDate}} {{dateToUnix(choosenDate)}}</p>
         </div>
-        <ul class="weekdays">
-            <li v-for="day in days">{{day}}</li>
-        </ul>
-        <ul class="dates">
-            <li v-for="blank in firstDayOfMonth">&nbsp;</li>
-            <li v-for="date in daysInMonth" :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear, 'chosen-day': choosenDate == date + ' ' + month + ' ' + year}" @click="chooseData(date, month, year)">
+        <div class="weekdays row">
+            <div class="col-2 col-day-week" v-for="day in days">{{day}}</div>
+        </div>
+        <div class="dates row">
+            <div class="col-2 col-day-week" v-for="blank in firstDayOfMonth">&nbsp;</div>
+            <div class="col-2 col-day-week border" v-for="date in daysInMonth" :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear, 'chosen-day': choosenDate == date + ' ' + month + ' ' + year}" @click="chooseData(date, month, year)">
                 <span>{{date}}</span>
-                
-            </li>
-        </ul>
+
+                <ul class="event" v-if="date == 12">
+                    <li>task1</li>
+                    <li>tas2</li>
+                    <li>tas2</li>
+                    <li>tas2</li>
+                    <li>tas5</li>
+                </ul>
+                <ul class="event" v-else>
+                    <li>event1</li>
+                    <li>evet2</li>
+                </ul>
+
+            </div>
+        </div>
     </div>
 
 
@@ -43,7 +59,9 @@ export default {
             today: this.$moment(),
             dateContext: this.$moment(),
             days: ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT'],
-            events:[{'id':1,'time':'11:00 - 12:00'},{'id':2,'time':'12:00 - 13:00'},{'id':3,'time':'13:00 - 14:00'}],
+            events: [{"id":1,"recursion_id":null,"user_id":"2","room_id":"1","description":"SOME DESC","starttime":"2018-09-19 13:00:00","endtime":"2018-09-20 14:00:00","created":"2018-09-19 13:19:51"},
+                    {"id":2,"recursion_id":null,"user_id":"2","room_id":"1","description":"test description","starttime":"2018-09-20 15:00:00","endtime":"2018-09-20 16:00:00","created":"2018-09-19 13:39:02"}
+                  ],
             choosenDate: '',
         }
     },
@@ -63,8 +81,8 @@ export default {
             this.choosenDate = date + ' ' + month + ' ' + year;
         },
 
-        dateToUnix(date){
-          return Date.parse(date)/1000;//.getTime()/1000;
+        dateToUnix(date) {
+            return Date.parse(date) / 1000; //.getTime()/1000;
 
         }
 
@@ -130,12 +148,13 @@ ul li {
     text-align: center;
 }
 
-ul li {
+.col-day-week {
     width: 14.28%;
-    height: 35px;
-    line-height: 35px;
     text-align: center;
-    border: 2px solid transparent;
+    -ms-flex: 0 0 14.28%;
+    -webkit-box-flex: 0;
+    flex: 0 0 14.28%;
+    max-width: 14.28%;
 }
 
 ul.dates li.current-day {
@@ -145,7 +164,12 @@ ul.dates li.current-day {
 }
 
 ul.dates li {
-  height: 100px;
+    height: auto;
+}
+
+ul.event li {
+    width: 100%;
+    height: auto;
 }
 
 .info {
@@ -183,11 +207,12 @@ ul {
     color: #9644b6;
 }
 
-.dates li:hover {
+
+/* .dates li:hover {
     border: 2px solid #bfa2ce;
     color: #9454b6;
     cursor: pointer;
-}
+} */
 
 .chosen-day {
     border: 2px solid #44abb6;

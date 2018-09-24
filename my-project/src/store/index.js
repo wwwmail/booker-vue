@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 //const vueConfig = require('vue-config')
 const vuexConfigs = {
-  API: 'http://booker-rest.test' // It's better to require a config file
-  //API: 'http://192.168.0.15/~user4/php7/bookshop'
+//  API: 'http://booker-rest.test' // It's better to require a config file
+  API: 'http://192.168.0.15/~user4/php7/booker'
 }
 
 
@@ -14,9 +14,8 @@ const vuexConfigs = {
 
 export default  new Vuex.Store({
   state:{
-    booksList:[],
     isAuth: false,
-    cartItems: 0,
+
     isAdmin: false,
   },
   getters: {
@@ -33,33 +32,6 @@ export default  new Vuex.Store({
 
   },
   actions: {
-    getAllBooks({ commit }) {
-
-      fetch(vuexConfigs.API + '/books').then(function(response) {
-           return response.json();
-       }).then((response) => {
-           let booksList = response;
-           commit('set', { type: 'booksList', items: booksList })
-       });
-    },
-
-    getBooksByAuthor({commit}, id){
-      fetch(vuexConfigs.API + '/books?author='+id).then(function(response) {
-           return response.json();
-       }).then((response) => {
-           let booksList = response;
-           commit('set', { type: 'booksList', items: booksList })
-       });
-    },
-
-    getBooksByGenre({commit}, id){
-      fetch(vuexConfigs.API + '/books?genre='+id).then(function(response) {
-           return response.json();
-       }).then((response) => {
-           let booksList = response;
-           commit('set', { type: 'booksList', items: booksList })
-       });
-    },
 
     checkAuth({commit}){
      let token = localStorage.getItem('user-token') || '';
@@ -89,39 +61,7 @@ export default  new Vuex.Store({
       commit('set' ,{type: 'isAuth', items: false});
       commit('set' ,{type: 'isAdmin', items: false});
     },
-    setEmptyCounters({commit}){
-      commit('set', {type: 'cartItems', items:0})
-    },
-    addCountCartItems({commit}){
 
-      let token = localStorage.getItem('user-token') || '';
-      console.log('add cart');
-       Vue.axios.get(vuexConfigs.API + '/cart', {
-               headers: {'Authorization': 'Bearer ' + token,}
-           }).then((response) => {
-             if(response.data.cartItems){
-               let count =  response.data.cartItems.length;
-
-               commit('set', {type: 'cartItems', items: count});
-             }
-
-       })
-
-    },
-    subCountCartItems({commit}){
-      let token = localStorage.getItem('user-token') || '';
-      console.log('add cart');
-       Vue.axios.get(vuexConfigs.API + '/cart', {
-               headers: {'Authorization': 'Bearer ' + token,}
-           }).then((response) => {
-           let count =  response.data.cartItems.length;
-
-
-               commit('set', {type: 'cartItems', items: count});
-
-
-       })
-    }
   }
 
 })

@@ -22,17 +22,24 @@
 
             <p>Your selected date is : {{choosenDate}} {{dateToUnix(choosenDate)}}</p>
             <router-link :to="{ name: 'AddEvent'}"> Add event</router-link>
+
+            <b-form-group>
+                <b-form-radio-group id="radios" v-model="typeCalendar" name="radioSubComponent">
+                    <b-form-radio @change.native="setTypeOfCalendar($event.target.value)" value="1">Monday</b-form-radio>
+                    <b-form-radio @change.native="setTypeOfCalendar($event.target.value)" value="6">Sunday</b-form-radio>
+                </b-form-radio-group>
+            </b-form-group>
         </div>
         <div class="weekdays row">
-            <div class="col-2 col-day-week" v-for="day in days">{{day}}</div>
+            <div class="col-2 col-day-week" v-for="day in getDays()">{{day}}</div>
         </div>
         <div class="dates row">
-            <div class="col-2 col-day-week" v-for="blank in firstDayOfMonth">&nbsp;</div>
+            <div class="col-2 col-day-week" v-for="blank in getfirstDayOfMonth()">&nbsp;</div>
             <div class="col-2 col-day-week border" v-for="date in daysInMonth" :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear, 'chosen-day': choosenDate == date + ' ' + month + ' ' + year}" @click="chooseData(date, month, year)">
                 <span>{{date}}</span>
 
                 <ul class="event">
-                    <li v-for="item in getEventsByDay(year,monthNumber,date)">{{item.starttime | moment("h:m") }} - {{item.endtime | moment("h:m")}}</li>
+                    <li v-for="item in getEventsByDay(year,monthNumber,date)">{{item.starttime | moment("h:mm a") }} - {{item.endtime | moment("h:mm a")}}</li>
                 </ul>
 
             </div>
@@ -53,10 +60,13 @@ export default {
     data() {
         return {
             today: this.$moment(),
-            dateContext: this.$moment(),
-            days: ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT'],
+            dateContext: this.$moment().startOf('week').isoWeekday(1),
+            //days: ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT'],
+            //days2: ['MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT','SUN'],
             events: [],
             choosenDate: '',
+            typeHour:12,
+            typeCalendar:localStorage.getItem('calendar-type'),
         }
     },
     methods: {
@@ -90,6 +100,17 @@ export default {
             })
         },
 
+        getDays(){
+          let type = this.getTypeCalendar();
+          if(type == 1){
+            return ['MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT','SUN']
+          }else if (type == 6) {
+            return ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT']
+          }else {
+            return ['MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT','SUN']
+          }
+        },
+
         getEventsByDay(year, month, day){
 
           let events = this.events;
@@ -98,6 +119,40 @@ export default {
               return e.date == year+'-'+month+'-'+day;
           });
           return getEventsByDay;
+        },
+
+        setTypeOfCalendar(id){
+          localStorage.setItem('calendar-type', id);
+          this.typeCalendar = localStorage.getItem('calendar-type');
+
+          var t = this;
+          var firstDay = this.$moment(t.dateContext).subtract((t.currentDate - 0), 'days');
+
+          this.firstDayOfMonth = firstDay.weekday();
+        },
+
+        getfirstDayOfMonth() {
+          let type = this.getTypeCalendar();
+          if(type == 1){
+            var t = this;
+            var firstDay = this.$moment(t.dateContext).subtract((t.currentDate - 0), 'days');
+
+            return firstDay.weekday();
+          }else if (type == 6) {
+            var t = this;
+            var firstDay = this.$moment(t.dateContext).subtract((t.currentDate - 1), 'days');
+
+            return firstDay.weekday();
+          }else {
+            var t = this;
+            var firstDay = this.$moment(t.dateContext).subtract((t.currentDate - 0), 'days');
+
+            return firstDay.weekday();
+          }
+
+        },
+        getTypeCalendar(){
+          return localStorage.getItem('calendar-type');
         }
 
 
@@ -134,6 +189,7 @@ export default {
         firstDayOfMonth: function() {
             var t = this;
             var firstDay = this.$moment(t.dateContext).subtract((t.currentDate - 1), 'days');
+
             return firstDay.weekday();
         },
 
@@ -149,6 +205,17 @@ export default {
             var t = this;
             return t.today.format('Y');
         },
+        days: function(){
+          let type = this.getTypeCalendar();
+          if(type == 1){
+            return ['MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT','SUN']
+          }else if (type == 6) {
+            return ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT']
+          }else {
+            return ['MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT','SUN']
+          }
+
+        }
 
     },
 
@@ -195,6 +262,7 @@ ul.dates li {
 ul.event li {
     width: 100%;
     height: auto;
+    font-size: 12px;
 }
 
 .info {

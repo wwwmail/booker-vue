@@ -1,7 +1,10 @@
 
+
 <template>
 
 <div class="container">
+
+<!-- {{events}} -->
     <div class="row">
         <div class="col-4">room 1</div>
         <div class="col-4"> room 2</div>
@@ -12,12 +15,13 @@
         <div class="calendar-header  row">
             <span class="prev" @click="subtractMonth"><icon name="angle-double-left"></icon></span>
 
-            <span class="info">{{month + ' - ' + year}}</span>
+            <span class="info">{{initialDate}} {{month + ' - ' + year}} </span>
 
             <span class="next" @click="addMonth"><icon name="angle-double-right"></icon></span>
 
 
             <p>Your selected date is : {{choosenDate}} {{dateToUnix(choosenDate)}}</p>
+            <router-link :to="{ name: 'AddEvent'}"> Add event</router-link>
         </div>
         <div class="weekdays row">
             <div class="col-2 col-day-week" v-for="day in days">{{day}}</div>
@@ -27,16 +31,8 @@
             <div class="col-2 col-day-week border" v-for="date in daysInMonth" :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear, 'chosen-day': choosenDate == date + ' ' + month + ' ' + year}" @click="chooseData(date, month, year)">
                 <span>{{date}}</span>
 
-                <ul class="event" v-if="date == 12">
-                    <li>task1</li>
-                    <li>tas2</li>
-                    <li>tas2</li>
-                    <li>tas2</li>
-                    <li>tas5</li>
-                </ul>
-                <ul class="event" v-else>
-                    <li>event1</li>
-                    <li>evet2</li>
+                <ul class="event">
+                    <li v-for="item in getEventsByDay(year,monthNumber,date)">{{item.starttime | moment("h:m") }} - {{item.endtime | moment("h:m")}}</li>
                 </ul>
 
             </div>
@@ -59,9 +55,7 @@ export default {
             today: this.$moment(),
             dateContext: this.$moment(),
             days: ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT'],
-            events: [{"id":1,"recursion_id":null,"user_id":"2","room_id":"1","description":"SOME DESC","starttime":"2018-09-19 13:00:00","endtime":"2018-09-20 14:00:00","created":"2018-09-19 13:19:51"},
-                    {"id":2,"recursion_id":null,"user_id":"2","room_id":"1","description":"test description","starttime":"2018-09-20 15:00:00","endtime":"2018-09-20 16:00:00","created":"2018-09-19 13:39:02"}
-                  ],
+            events: [],
             choosenDate: '',
         }
     },
@@ -74,7 +68,6 @@ export default {
         subtractMonth: function() {
             var t = this;
             t.dateContext = this.$moment(t.dateContext).subtract(1, 'month');
-
         },
 
         chooseData: function(date, month, year) {
@@ -83,13 +76,34 @@ export default {
 
         dateToUnix(date) {
             return Date.parse(date) / 1000; //.getTime()/1000;
+        },
 
+        getEvents() {
+
+            let token = localStorage.getItem('user-token') || '';
+            this.axios.get(this.$config.API + '/events', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                }
+            }).then((response) => {
+                this.events = response.data;
+            })
+        },
+
+        getEventsByDay(year, month, day){
+
+          let events = this.events;
+
+          let getEventsByDay = events.filter(function (e) {
+              return e.date == year+'-'+month+'-'+day;
+          });
+          return getEventsByDay;
         }
 
 
     },
     created: function() {
-
+        this.getEvents();
     },
 
     computed: {
@@ -102,6 +116,10 @@ export default {
         month: function() {
             var t = this;
             return t.dateContext.format('MMMM');
+        },
+        monthNumber: function() {
+            var t = this;
+            return t.dateContext.format('MM');
         },
 
         daysInMonth: function() {
@@ -134,10 +152,17 @@ export default {
 
     },
 
+    filters:{
+      formatDate(value) {
+        if (value) {
+          return this.$moment(String(value)).format('MM/DD/YYYY hh:mm');
+        }
+    }
+  }
+
 }
 
 </script>
-
 
 <style scoped>
 

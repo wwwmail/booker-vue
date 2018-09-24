@@ -1,9 +1,15 @@
+<style>
+
+
+
+</style>
 
 <template>
 
 <div id="app">
-
-    <router-view/>
+    <div class="container">
+        <router-view/>
+    </div>
 </div>
 
 </template>
@@ -12,25 +18,19 @@
 
 export default {
     name: 'App',
-    methods:{
-      checkAuth: function(){
-          this.$store.dispatch('checkAuth');
-      },
-      addCounter(){
-        this.$store.dispatch('addCountCartItems');
-      }
+    methods: {
+        checkAuth: function() {
+            this.$store.dispatch('checkAuth');
+        },
+        addCounter() {
+            this.$store.dispatch('addCountCartItems');
+        }
     },
     created() {
         this.checkAuth();
-          this.addCounter();
+        this.addCounter();
     },
-  //  components:{Books,Genres,Authors,NavBar}
+    //  components:{Books,Genres,Authors,NavBar}
 }
 
 </script>
-
-
-<style>
-
-
-</style>

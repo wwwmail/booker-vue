@@ -39,7 +39,9 @@
                 <span>{{date}}</span>
 
                 <ul class="event">
-                    <li v-for="item in getEventsByDay(year,monthNumber,date)">{{item.starttime | moment("h:mm a") }} - {{item.endtime | moment("h:mm a")}}</li>
+                    <li v-for="item in getEventsByDay(year,monthNumber,date)">
+
+                      <router-link :to="{ name: 'EditEvent', params: {id: item.id} }">{{item.starttime | moment("H:mm") }} - {{item.endtime | moment("H:mm")}}</router-link></li>
                 </ul>
 
             </div>
@@ -113,10 +115,12 @@ export default {
 
         getEventsByDay(year, month, day){
 
+          let formatDate = this.$moment(year+'-'+month+'-'+day).format('YYYY-MM-DD');
+
           let events = this.events;
 
           let getEventsByDay = events.filter(function (e) {
-              return e.date == year+'-'+month+'-'+day;
+              return e.date == formatDate;
           });
           return getEventsByDay;
         },
@@ -124,11 +128,6 @@ export default {
         setTypeOfCalendar(id){
           localStorage.setItem('calendar-type', id);
           this.typeCalendar = localStorage.getItem('calendar-type');
-
-          var t = this;
-          var firstDay = this.$moment(t.dateContext).subtract((t.currentDate - 0), 'days');
-
-          this.firstDayOfMonth = firstDay.weekday();
         },
 
         getfirstDayOfMonth() {

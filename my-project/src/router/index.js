@@ -10,7 +10,9 @@ import AddUser from '@/components/AddUser'
 import EditUser from '@/components/EditUser'
 import AddEvent from '@/components/AddEvent'
 
+import EditEvent from '@/components/EditEvent'
 
+import NavBar from '@/components/NavBar'
 Vue.use(Router)
 
 
@@ -50,10 +52,23 @@ const routes =  [
             }
     },
     {
+      path: '/edit/event/:id',
+      name: 'EditEvent',
+      component: EditEvent
+    },
+
+    {
+      path: '/navbar',
+      name: 'NavBar',
+      component: NavBar
+    },
+    {
       path: '/booker',
       name: 'Calendar',
       component: Calendar
     },
+
+
   ];
 
 

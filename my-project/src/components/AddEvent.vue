@@ -18,7 +18,7 @@
             <h2 class="title-event text-center">  Add Event</h2>
         </div>
         <h3>{{infoMessage}}</h3>
-        <div class="row">
+        <div class="row"  v-if="isAdmin">
 
             <div class="col-2 field-label-responsive">
                 <label for="name">Booked for</label>
@@ -267,8 +267,8 @@
 
                         <b-form-group>
                             <b-form-radio-group id="radios2" v-model="reccuringType" name="radio2">
-                                <b-form-radio value="wickly">wickly</b-form-radio>
-                                <b-form-radio value="be-wickly">be-wickly</b-form-radio>
+                                <b-form-radio value="weeckly">weeckly</b-form-radio>
+                                <b-form-radio value="be-weeckly">be-weeckly</b-form-radio>
                                 <b-form-radio value="monthly">monthly</b-form-radio>
                             </b-form-radio-group>
                         </b-form-group>
@@ -361,7 +361,7 @@ export default {
 
             currentDate: this.$moment(),
             monthLabels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-            years: [2018, 2019, 2020, 2021, 2022],
+            years: [2018, 2019],
             hours: {
                 'T12': 12,
                 'T24': 24
@@ -417,7 +417,7 @@ export default {
 
             validateForm(){
               let error = false;
-              if (!this.selected.user) {
+              if (!this.selected.user && this.isAdmin) {
                   this.errorValidate.user = 'Please select user is required';
                   error = true;
               }else {
@@ -490,6 +490,10 @@ export default {
             let d = new Date(this.selectedDateTime.year, this.selectedDateTime.month, 0);
             return d.getDate();
         },
+
+        isAdmin(){
+          return this.$store.state.isAdmin;
+        }
     },
     created() {
         this.getUsers();

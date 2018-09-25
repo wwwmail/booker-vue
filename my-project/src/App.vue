@@ -8,6 +8,7 @@
 
 <div id="app">
     <div class="container">
+      <!-- <nav-bar></nav-bar> -->
         <router-view/>
     </div>
 </div>
@@ -15,6 +16,7 @@
 </template>
 
 <script>
+//import NavBar from './components/NavBar'
 
 export default {
     name: 'App',
@@ -22,13 +24,13 @@ export default {
         checkAuth: function() {
             this.$store.dispatch('checkAuth');
         },
-  
+
     },
     created() {
         this.checkAuth();
 
     },
-    //  components:{Books,Genres,Authors,NavBar}
+      components:{}
 }
 
 </script>

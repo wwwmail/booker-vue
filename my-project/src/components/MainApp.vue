@@ -12,11 +12,11 @@
 
 <div class="container main-container">
 <logout></logout>
-    <div v-if="isAdmin">
+    <div v-if="Admin">
         <admin></admin>
     </div>
 
-    <div  v-else-if="isAuth">
+    <div  v-else-if="Auth">
       <calendar></calendar>
     </div>
 
@@ -34,14 +34,15 @@ import Login from './Login';
 import Calendar from './Calendar';
 import Admin from './Admin';
 import Logout from './Logout';
+import NavBar from './NavBar'
 
 export default {
     name: 'MainApp',
     computed: {
-        isAuth() {
+        Auth() {
             return this.$store.state.isAuth;
         },
-        isAdmin(){
+        Admin(){
           return this.$store.state.isAdmin;
         }
     },

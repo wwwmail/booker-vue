@@ -20,6 +20,7 @@ import AdminAddRoom from '@/components/admin/AdminAddRoom'
 
 import AdminEditRoom from '@/components/admin/AdminEditRoom'
 
+import Admin from '@/components/Admin'
 Vue.use(Router)
 
 
@@ -50,7 +51,7 @@ const routes =  [
             }
     },
     {
-      path: '/event/add',
+      path: '/event/add/:id',
       name: 'AddEvent',
       component: AddEvent,
       meta: {
@@ -94,6 +95,17 @@ const routes =  [
     },
 
 
+    {
+      path: '/admin/users',
+      name: 'Admin',
+      component: Admin,
+      meta: {
+                requiresAuth: true,
+                is_admin : true
+            }
+    },
+
+
 
     {
       path: '/navbar',
@@ -103,7 +115,11 @@ const routes =  [
     {
       path: '/booker',
       name: 'Calendar',
-      component: Calendar
+      component: Calendar,
+      meta: {
+                requiresAuth: true,
+                is_admin : true
+            }
     },
 
 

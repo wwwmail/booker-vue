@@ -1,6 +1,6 @@
 
 <template>
-<a class="float-right" v-on:click="sendLogout"><icon name="sign-out-alt"></icon></a>
+<a class="float-right nav-link" v-on:click="sendLogout"><icon name="sign-out-alt"></icon></a>
 </template>
 <script>
 export default {

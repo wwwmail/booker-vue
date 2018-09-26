@@ -3,7 +3,7 @@
 <template>
 
 <div class="container">
-
+{{typeTime}} {{momentFilter}}
   <b-modal ref="myModalRef" hide-footer>
     <div>{{infoMessage}}</div>
       <div class="d-block text-center">
@@ -67,31 +67,47 @@
       <b-btn class="mt-3" variant="primary" block @click="hideModal">No</b-btn>
   </b-modal>
 <!-- {{events}} -->
-    <div class="row">
-        <div class="col-4">room 1</div>
-        <div class="col-4"> room 2</div>
-        <div class="col-4"> room 3</div>
+    <div class="row text-center">
+        <div class="col" v-for="room in rooms" :class="{'bg-success': room.id == selectRoomId}"><a v-on:click="selectRoom(room.id)">{{room.name}}</a></div>
     </div>
     <div class="calendar">
 
         <div class="calendar-header  row">
+          <div class="col-8">
             <span class="prev" @click="subtractMonth"><icon name="angle-double-left"></icon></span>
 
             <span class="info">{{initialDate}} {{month + ' - ' + year}} </span>
 
             <span class="next" @click="addMonth"><icon name="angle-double-right"></icon></span>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-success" v-if="selectRoomId">
+              <router-link class="text-white"  :to="{ name: 'AddEvent', params: {id:selectRoomId}}"> Add event</router-link>
+            </button>
 
+          </div>
+        </div>
 
-            <p>Your selected date is : {{choosenDate}} {{dateToUnix(choosenDate)}}</p>
-            <router-link :to="{ name: 'AddEvent'}"> Add event</router-link>
-
+        <div class="row bg-danger">
+          <div class="col-6 align-middle">
             <b-form-group>
                 <b-form-radio-group id="radios" v-model="typeCalendar" name="radioSubComponent">
                     <b-form-radio @change.native="setTypeOfCalendar($event.target.value)" value="1">Monday</b-form-radio>
                     <b-form-radio @change.native="setTypeOfCalendar($event.target.value)" value="6">Sunday</b-form-radio>
                 </b-form-radio-group>
             </b-form-group>
+          </div>
+          <div class="col-6  align-middle text-right">
+            <b-form-group class="align-middle">
+                <b-form-radio-group id="radios" v-model="typeCalendar" name="radioSubComponent">
+                    <b-form-radio @change.native="setTypeOfTime($event.target.value)" value="12">12</b-form-radio>
+                    <b-form-radio @change.native="setTypeOfTime($event.target.value)" value="24">24</b-form-radio>
+                </b-form-radio-group>
+            </b-form-group>
+          </div>
         </div>
+
+
         <div class="weekdays row">
             <div class="col-2 col-day-week" v-for="day in getDays()">{{day}}</div>
         </div>
@@ -103,7 +119,7 @@
                 <ul class="event">
                     <li v-for="item in getEventsByDay(year,monthNumber,date)">
                       <a  @click="showModal(item.id)">
-                          {{item.starttime | moment("H:mm") }} - {{item.endtime | moment("H:mm")}}
+                          {{item.starttime | moment(momentFilter) }} - {{item.endtime | moment(momentFilter)}}
                       </a>
 
                       <!-- <router-link :to="{ name: 'EditEvent', params: {id: item.id} }">{{item.starttime | moment("H:mm") }} - {{item.endtime | moment("H:mm")}}</router-link>-->
@@ -153,9 +169,31 @@ export default {
             },
             recUpdate:null,
             infoMessage:'',
+            rooms:[],
+            selectRoomId:null,
+            typeTime: localStorage.getItem('time-type') ? localStorage.getItem('time-type') : 12,
+            momentFilter: localStorage.getItem('time-type') == 12 ? 'h:mm a' : 'H:mm'
         }
     },
     methods: {
+      selectRoom(id){
+        console.log(id);
+        this.selectRoomId = id;
+        this.getEvents();
+      },
+      getRooms(){
+        let token = localStorage.getItem('user-token') || '';
+        this.axios.get(this.$config.API + '/rooms', {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then((response) => {
+            this.rooms = response.data;
+
+            this.selectRoomId = response.data[0].id;
+
+        })
+      },
       removeEvent(id){
 
         let token = localStorage.getItem('user-token') || '';
@@ -232,7 +270,7 @@ export default {
         getEvents() {
 
             let token = localStorage.getItem('user-token') || '';
-            this.axios.get(this.$config.API + '/events', {
+            this.axios.get(this.$config.API + '/events?room='+this.selectRoomId, {
                 headers: {
                     'Authorization': 'Bearer ' + token,
                 }
@@ -269,7 +307,7 @@ export default {
 
         getEventsByDay(year, month, day){
 
-          let formatDate = this.$moment(year+'-'+month+'-'+day).format('YYYY-MM-DD');
+          let formatDate = this.$moment(new Date(year+'-'+month+'-'+day)).format('YYYY-MM-DD');
 
           let events = this.events;
 
@@ -282,6 +320,12 @@ export default {
         setTypeOfCalendar(id){
           localStorage.setItem('calendar-type', id);
           this.typeCalendar = localStorage.getItem('calendar-type');
+        },
+
+        setTypeOfTime(id){
+          localStorage.setItem('time-type', id);
+          this.typeTime = localStorage.getItem('time-type');
+          this.momentFilter = this.typeTime == 12 ? 'h:mm a' : 'H:mm'
         },
 
         getfirstDayOfMonth() {
@@ -311,7 +355,9 @@ export default {
 
     },
     created: function() {
+      this.getRooms();
         this.getEvents();
+
     },
 
     computed: {

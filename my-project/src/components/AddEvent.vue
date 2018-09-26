@@ -47,6 +47,8 @@
             </div>
 
         </div>
+        
+
         <div class="row">
 
             <div class="col-2 field-label-responsive">
@@ -459,7 +461,7 @@ export default {
                      },
                      data:{
                        user_id: this.selected.user,
-                       room_id: this.roomId,
+                       room_id: this.$route.params.id,
                        recursion:this.reccuring,
                        description: this.event.description,
                        date: this.selectedDateTime.year +"-" + this.selectedDateTime.month+'-'+this.selectedDateTime.day,

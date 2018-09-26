@@ -7,6 +7,7 @@
       <div class="nav">
         <router-link :to="{ name: 'AddUser', params: {} }">AddUser</router-link>
         <router-link :to="{ name: 'AddEvent', params: {} }">AddEvent</router-link>
+        <router-link :to="{ name: 'AdminRooms', params: {} }">Admin Rooms</router-link>
         <router-link :to="{ name: 'Calendar', params: {} }">Calendar</router-link>
 
       </div>

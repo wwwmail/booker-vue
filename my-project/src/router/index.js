@@ -13,6 +13,13 @@ import AddEvent from '@/components/AddEvent'
 import EditEvent from '@/components/EditEvent'
 
 import NavBar from '@/components/NavBar'
+
+import AdminRooms from '@/components/admin/AdminRooms'
+
+import AdminAddRoom from '@/components/admin/AdminAddRoom'
+
+import AdminEditRoom from '@/components/admin/AdminEditRoom'
+
 Vue.use(Router)
 
 
@@ -56,6 +63,37 @@ const routes =  [
       name: 'EditEvent',
       component: EditEvent
     },
+    {
+      path: '/admin/rooms',
+      name: 'AdminRooms',
+      component: AdminRooms,
+      meta: {
+                requiresAuth: true,
+                is_admin : true
+            }
+    },
+
+    {
+      path: '/admin/rooms/add',
+      name: 'AdminAddRoom',
+      component: AdminAddRoom,
+      meta: {
+                requiresAuth: true,
+                is_admin : true
+            }
+    },
+
+    {
+      path: '/admin/rooms/:id',
+      name: 'AdminEditRoom',
+      component: AdminEditRoom,
+      meta: {
+                requiresAuth: true,
+                is_admin : true
+            }
+    },
+
+
 
     {
       path: '/navbar',

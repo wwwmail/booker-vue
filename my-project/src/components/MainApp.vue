@@ -1,17 +1,7 @@
-<style>
-
-#app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-</style>
-
 <template>
 
 <div class="container main-container">
-<logout></logout>
+<nav-bar></nav-bar>
     <div v-if="Admin">
         <admin></admin>
     </div>
@@ -47,7 +37,7 @@ export default {
         }
     },
     components: {
-        Login, Calendar, Admin, Logout
+        Login, Calendar, Admin, Logout,NavBar
     }
 }
 

@@ -267,8 +267,8 @@
 
                         <b-form-group>
                             <b-form-radio-group id="radios2" v-model="reccuringType" name="radio2">
-                                <b-form-radio value="weeckly">weeckly</b-form-radio>
-                                <b-form-radio value="be-weeckly">be-weeckly</b-form-radio>
+                                <b-form-radio value="weekly">weeckly</b-form-radio>
+                                <b-form-radio value="be-weekly">be-weeckly</b-form-radio>
                                 <b-form-radio value="monthly">monthly</b-form-radio>
                             </b-form-radio-group>
                         </b-form-group>

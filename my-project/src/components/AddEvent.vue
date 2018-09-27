@@ -331,8 +331,8 @@
         <div class="row">
             <div class="col-4"></div>
             <div class="col-8">
-                <button v-on:click="sendForm()" class="btn btn-style btn-event bg-success text-white">
-                        <icon name="plus"></icon> event</button>
+                <span v-on:click="sendForm()" class="btn btn-style btn-event bg-success text-white">
+                        <icon name="plus"></icon> event</span>
             </div>
         </div>
     </form>

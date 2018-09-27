@@ -46,11 +46,14 @@
             <div class="col-1"></div>
           </div>
 
-          <div class="row" v-if="event.recursion != 0 && event.recursion != null">
-            <div class="col-12">{{event.recursion}}Apply to all occurrences?</div>
+          <div class="row " v-if="event.recursion != 0 && event.recursion != null">
+            <div class="col-1"></div>
+            <div class="col-10 bg-secondary">Apply to all occurrences?</div>
+            <div class="col-1"></div>
           </div>
-          <div class="row" v-if="event.recursion != 0 && event.recursion != null">
-            <div class="col">
+          <div class="row " v-if="event.recursion != 0 && event.recursion != null">
+            <div class="col-1"></div>
+            <div class="col-10 bg-secondary">
             <b-form-group>
                 <b-form-radio-group id="radiosRec" v-model="recUpdate" name="radioSubComponentRec">
 
@@ -59,6 +62,7 @@
                 </b-form-radio-group>
             </b-form-group>
           </div>
+          <div class="col-1"></div>
         </div>
           <div class="row">
             <div class="col"><button v-on:click="updateEvent(event.id)" class="btn bg-success">Update</button></div>

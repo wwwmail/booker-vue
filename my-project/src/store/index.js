@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 //const vueConfig = require('vue-config')
 const vuexConfigs = {
-//  API: 'http://booker-rest.test' // It's better to require a config file
-  API: 'http://192.168.0.15/~user4/php7/booker'
+  API: 'http://booker-rest.test' // It's better to require a config file
+//  API: 'http://192.168.0.15/~user4/php7/booker'
 }
 
 
@@ -17,6 +17,8 @@ export default  new Vuex.Store({
     isAuth: false,
 
     isAdmin: false,
+
+    idUser:0,
   },
   getters: {
    booksList(state) {
@@ -48,6 +50,7 @@ export default  new Vuex.Store({
               }
 
                 commit('set', {type: 'isAuth', items: true});
+                commit('set', {type:'userId', items:response.data.id })
             }
 
       })

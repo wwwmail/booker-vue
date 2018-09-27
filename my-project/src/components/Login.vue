@@ -4,8 +4,6 @@
 
 <div class="hello">
 
-
-    <div class="container main-container login-container">
         <form class="form-horizontal" role="form">
             <div class="row">
                 <h2 class="title-login text-center">Login Form</h2>
@@ -67,7 +65,7 @@
                 </div>
             </div>
         </form>
-    </div>
+
 </div>
 
 </template>

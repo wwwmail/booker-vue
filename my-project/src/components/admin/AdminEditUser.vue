@@ -2,7 +2,12 @@
 
 <template>
 
-<div class="container main-container">
+<div>
+  <div class="row">
+    <div class="col-12">
+    <nav-bar></nav-bar>
+    </div>
+  </div>
     <div class="row">
         <h1 class="title-current text-center">current user {{$route.params.id}}</h1>
     </div>
@@ -51,9 +56,9 @@
 </template>
 
 <script>
-
+import NavBar from '@/components/NavBar'
 export default {
-    name: 'EditUser',
+    name: 'AdminEditUser',
     data() {
         return {
             user:[],
@@ -94,6 +99,9 @@ export default {
     },
     created(){
       this.getUser();
+    },
+    components: {
+        NavBar
     }
 }
 

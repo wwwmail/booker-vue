@@ -3,7 +3,7 @@
 
 <template>
 
-<div class="container main-container">
+<div >
   <div class="row">
     <h1 class="title-current-order text-center">current order {{$route.params.id}}</h1>
   </div>

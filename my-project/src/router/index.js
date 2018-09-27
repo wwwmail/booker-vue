@@ -5,9 +5,9 @@ import HelloWorld from '@/components/HelloWorld'
 import Calendar from '@/components/Calendar'
 import Login from '@/components/Login'
 import MainApp from '@/components/MainApp'
-import AddUser from '@/components/AddUser'
+import AdminAddUser from '@/components/admin/AdminAddUser'
 
-import EditUser from '@/components/EditUser'
+import AdminEditUser from '@/components/admin/AdminEditUser'
 import AddEvent from '@/components/AddEvent'
 
 import EditEvent from '@/components/EditEvent'
@@ -20,7 +20,7 @@ import AdminAddRoom from '@/components/admin/AdminAddRoom'
 
 import AdminEditRoom from '@/components/admin/AdminEditRoom'
 
-import Admin from '@/components/Admin'
+import AdminUsers from '@/components/admin/AdminUsers'
 Vue.use(Router)
 
 
@@ -33,8 +33,8 @@ const routes =  [
     },
     {
       path: '/user/add',
-      name: 'AddUser',
-      component: AddUser,
+      name: 'AdminAddUser',
+      component: AdminAddUser,
       meta: {
                 requiresAuth: true,
                 is_admin : true
@@ -43,8 +43,8 @@ const routes =  [
 
     {
       path: '/user/:id',
-      name: 'EditUser',
-      component: EditUser,
+      name: 'AdminEditUser',
+      component: AdminEditUser,
       meta: {
                 requiresAuth: true,
                 is_admin : true
@@ -97,8 +97,8 @@ const routes =  [
 
     {
       path: '/admin/users',
-      name: 'Admin',
-      component: Admin,
+      name: 'AdminUsers',
+      component: AdminUsers,
       meta: {
                 requiresAuth: true,
                 is_admin : true

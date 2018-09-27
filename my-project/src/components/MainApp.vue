@@ -1,9 +1,9 @@
 <template>
 
-<div class="container main-container">
-<nav-bar></nav-bar>
+<div >
+<!-- <nav-bar></nav-bar> -->
     <div v-if="Admin">
-        <admin></admin>
+      <calendar></calendar>
     </div>
 
     <div  v-else-if="Auth">
@@ -22,7 +22,6 @@
 
 import Login from './Login';
 import Calendar from './Calendar';
-import Admin from './Admin';
 import Logout from './Logout';
 import NavBar from './NavBar'
 
@@ -37,7 +36,7 @@ export default {
         }
     },
     components: {
-        Login, Calendar, Admin, Logout,NavBar
+        Login, Calendar, Logout,NavBar
     }
 }
 

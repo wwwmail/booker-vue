@@ -2,7 +2,7 @@
 
 <template>
 
-<div class="hello">
+<div class="hello main-container">
 
     <div class="row">
         <div class="col-12">
@@ -15,11 +15,18 @@
 
     <form class="form-horizontal" role="form">
         <div class="row">
+          <div class="row-12">
             <h2 class="title-event text-center">  Add Event</h2>
+          </div>
         </div>
-        <h3>{{infoMessage}}</h3>
-        <div class="row"  v-if="isAdmin">
+        <div class="row">
+          <div class="row-12">
+            <h5 class="text-red">{{infoMessage}}</h5>
+          </div>
+        </div>
 
+        <div class="row"  v-if="isAdmin">
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="name">Booked for</label>
             </div>
@@ -35,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-control-feedback">
                     <span class="text-danger align-middle">
                             <!-- Put name validation error messages here -->
@@ -47,10 +54,10 @@
             </div>
 
         </div>
-        
+
 
         <div class="row">
-
+          <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="name">Select Date</label>
             </div>
@@ -58,7 +65,7 @@
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon" style="width: 2.6rem">
-                            <icon name="user"></icon>
+                            <icon name="calendar"></icon>
                         </div>
 
                         <select v-model="selectedDateTime.year" class="form-control">
@@ -68,7 +75,7 @@
 
                         <select v-model="selectedDateTime.month" class="form-control">
                             <option value="" disabled selected>Month</option>
-                            <option v-for="option in monthLabels" v-bind:value="option">{{option | moment("MMMM")}}</option>
+                            <option v-for="option in monthLabels" v-bind:value="option">{{new Date(option) | moment("MMMM")}}</option>
                         </select>
 
                         <select v-model="selectedDateTime.day" class="form-control">
@@ -81,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-control-feedback">
                     <span class="text-danger align-middle">
                               <span v-if="errorValidate.year">  {{errorValidate.year}} </span>
@@ -101,7 +108,7 @@
 
 
         <div class="row">
-
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="email">start time</label>
             </div>
@@ -109,12 +116,12 @@
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon" style="width: 2.6rem">
-                            <icon name="at"></icon>
+                            <icon name="clock"></icon>
                         </div>
 
                         <select v-model="selectedDateTime.startHour" class="form-control">
                             <option value="" disabled selected>hours </option>
-                            <option v-for="option in hours.T12" v-bind:value="option">{{option}}</option>
+                            <option v-for="option in hours[hour]" v-bind:value="option">{{option}}</option>
                         </select>
 
 
@@ -123,7 +130,7 @@
                             <option v-for="option in minutes" v-bind:value="option">{{option}}</option>
                         </select>
 
-                        <select v-model="selectedDateTime.formatStartTime" class="form-control">
+                        <select v-if="hours[hour] != 24" v-model="selectedDateTime.formatStartTime" class="form-control">
                             <option value="" disabled selected>AM/PM</option>
                             <option v-for="option in t12" v-bind:value="option">{{option}}</option>
                         </select>
@@ -131,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-control-feedback">
                   <span class="text-danger align-middle">
                             <span v-if="errorValidate.startHour">  {{errorValidate.startHour}} </span>
@@ -149,7 +156,7 @@
 
 
         <div class="row">
-
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="email">end time</label>
             </div>
@@ -157,12 +164,12 @@
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon" style="width: 2.6rem">
-                            <icon name="at"></icon>
+                            <icon name="clock"></icon>
                         </div>
 
                         <select v-model="selectedDateTime.endHour" class="form-control">
                             <option value="" disabled selected>hours </option>
-                            <option v-for="option in hours.T12" v-bind:value="option">{{option}}</option>
+                            <option v-for="option in hours[hour]" v-bind:value="option">{{option}}</option>
                         </select>
 
 
@@ -171,7 +178,7 @@
                             <option v-for="option in minutes" v-bind:value="option">{{option}}</option>
                         </select>
 
-                        <select v-model="selectedDateTime.formatEndTime" class="form-control">
+                        <select v-if="hours[hour] != 24" v-model="selectedDateTime.formatEndTime" class="form-control">
                             <option value="" disabled selected>AM/PM</option>
                             <option v-for="option in t12" v-bind:value="option">{{option}}</option>
                         </select>
@@ -179,7 +186,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-control-feedback">
                   <span class="text-danger align-middle">
                             <span v-if="errorValidate.endtHour">  {{errorValidate.endtHour}} </span>
@@ -196,7 +203,7 @@
         </div>
 
         <div class="row">
-
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="email">description</label>
             </div>
@@ -204,7 +211,7 @@
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon" style="width: 2.6rem">
-                            <icon name="at"></icon>
+                            <icon name="align-justify"></icon>
                         </div>
 
                         <textarea class="form-control" v-model="event.description"></textarea>
@@ -219,11 +226,11 @@
                     </span>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
 
         <div class="row">
-
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="email">is this going be a reccuring event</label>
             </div>
@@ -231,7 +238,7 @@
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon" style="width: 2.6rem">
-                            <icon name="at"></icon>
+                            <icon name="check"></icon>
                         </div>
 
                         <b-form-group>
@@ -252,11 +259,11 @@
                     </span>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
 
         <div class="row">
-
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="email">if it is reccuring, specify wickly, be-wickly, monthly</label>
             </div>
@@ -264,7 +271,7 @@
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                         <div class="input-group-addon" style="width: 2.6rem">
-                            <icon name="at"></icon>
+                            <icon name="check"></icon>
                         </div>
 
                         <b-form-group>
@@ -286,26 +293,28 @@
                     </span>
                 </div>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
         </div>
 
 
 
 
         <div class="row">
-            <div class="col-12">
+          <div class="col-1"></div>
+            <div class="col-8">
                 If weeckly or bi-weeckly, specify the number of weeks for it to keep reccuring. If monthly, specify the number of months. (If you choose "bi-weekly" and put in an odd number of weeks, the computer will round down.)
             </div>
+            <div class="col-3"></div>
         </div>
         <div class="row">
 
             <div class="col-3">
 
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="form-group has-danger">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <input type="text" name="password" v-model="reccuringValue" class="form-control"  placeholder="number" required>
+                        <input type="text" name="password" v-model="reccuringValue" class="form-control"  placeholder="number">
                     </div>
                 </div>
             </div>
@@ -316,14 +325,14 @@
                     </span>
                 </div>
             </div>
-            <div class="col-3"></div>
+            <div class="col-2"></div>
         </div>
 
         <div class="row">
             <div class="col-4"></div>
             <div class="col-8">
-                <span type="submit" v-on:click="sendForm()" class="btn btn-style btn-event">
-                        <icon name="plus"></icon> event</span>
+                <button v-on:click="sendForm()" class="btn btn-style btn-event bg-success text-white">
+                        <icon name="plus"></icon> event</button>
             </div>
         </div>
     </form>
@@ -365,11 +374,12 @@ export default {
             monthLabels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
             years: [2018, 2019],
             hours: {
-                'T12': 12,
-                'T24': 24
+                12: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+                24: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','00']
             },
+
             t12: ['AM', 'PM'],
-            minutes: ['00', '30'],
+            minutes: ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'],
 
             event: {
                 description: '',
@@ -404,6 +414,9 @@ export default {
         }
     },
     methods: {
+      setHours(){
+        this.hour = localStorage.getItem('time-type') ? localStorage.getItem('time-type') : 12
+      },
         getUsers() {
                 let token = localStorage.getItem('user-token') || '';
 
@@ -498,6 +511,7 @@ export default {
         }
     },
     created() {
+        this.setHours();
         this.getUsers();
     }
 }

@@ -3,6 +3,11 @@
 <template>
 
 <div class="admin">
+  <div class="row">
+    <div class="col-12">
+    <nav-bar></nav-bar>
+    </div>
+  </div>
 
     <div>
         <!-- <b-button @click="showModal(id)">
@@ -60,7 +65,7 @@
 </template>
 
 <script>
-
+import NavBar from '@/components/NavBar'
 export default {
     name: 'AdminRooms',
     data() {
@@ -118,6 +123,9 @@ export default {
 
     created() {
         this.getRooms();
+    },
+    components: {
+        NavBar
     }
 
 }

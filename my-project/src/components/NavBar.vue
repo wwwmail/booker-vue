@@ -7,7 +7,7 @@
 <nav class="navbar navbar-expand-sm bg-warning navbar-dark" v-if="isAdmin">
 <ul class="navbar-nav">
   <li class="nav-item active">
-    <router-link class="nav-link" :to="{ name: 'Admin', params: {} }">Admin users</router-link>
+    <router-link class="nav-link" :to="{ name: 'AdminUsers', params: {} }">Admin users</router-link>
   </li>
   <li class="nav-item active">
     <router-link class="nav-link" :to="{ name: 'AdminRooms', params: {} }">Admin rooms</router-link>

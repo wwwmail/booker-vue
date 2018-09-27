@@ -2,10 +2,14 @@
 
 <template>
 
-<div class="container">
-{{typeTime}} {{momentFilter}}
+<div>
+  <div class="row">
+    <div class="col-12 padding-0">
+      <nav-bar></nav-bar>
+    </div>
+  </div>
   <b-modal ref="myModalRef" hide-footer>
-    <div>{{infoMessage}}</div>
+    <div class="text-red">{{infoMessage}}</div>
       <div class="d-block text-center">
         <div class="row">
           <div class="col-12"><h3>B.B details </h3></div>
@@ -48,9 +52,9 @@
           <div class="row" v-if="event.recursion != 0 && event.recursion != null">
             <div class="col">
             <b-form-group>
-                <b-form-radio-group id="radiosRec" v-model="typeCalendar" name="radioSubComponentRec">
+                <b-form-radio-group id="radiosRec" v-model="recUpdate" name="radioSubComponentRec">
 
-                    <b-form-radio @change.native="setRecUpdateEvent($event.target.value)" selected value=0>No</b-form-radio>
+                    <b-form-radio @change.native="setRecUpdateEvent($event.target.value)" value=0>No</b-form-radio>
                     <b-form-radio @change.native="setRecUpdateEvent($event.target.value)" value=1>Yes</b-form-radio>
                 </b-form-radio-group>
             </b-form-group>
@@ -64,19 +68,23 @@
 
       </div>
 
-      <b-btn class="mt-3" variant="primary" block @click="hideModal">No</b-btn>
+
   </b-modal>
 <!-- {{events}} -->
     <div class="row text-center">
-        <div class="col" v-for="room in rooms" :class="{'bg-success': room.id == selectRoomId}"><a v-on:click="selectRoom(room.id)">{{room.name}}</a></div>
+        <div class="col rooms" v-for="room in rooms" :class="{'bg-success': room.id == selectRoomId}"  v-on:click="selectRoom(room.id)"><span>{{room.name}}</span></div>
     </div>
+
+
     <div class="calendar">
 
         <div class="calendar-header  row">
-          <div class="col-8">
+          <div class="col-8 align-self-center">
+
             <span class="prev" @click="subtractMonth"><icon name="angle-double-left"></icon></span>
 
-            <span class="info">{{initialDate}} {{month + ' - ' + year}} </span>
+            <!-- <span class="info">{{initialDate}} {{month + ' - ' + year}} </span> -->
+              <span class="info">{{month + ' - ' + year}} </span>
 
             <span class="next" @click="addMonth"><icon name="angle-double-right"></icon></span>
           </div>
@@ -88,22 +96,22 @@
           </div>
         </div>
 
-        <div class="row bg-danger">
-          <div class="col-6 align-middle">
-            <b-form-group>
-                <b-form-radio-group id="radios" v-model="typeCalendar" name="radioSubComponent">
+        <div class="row settings">
+          <div class="col-6 align-self-center">
+
+                <b-form-radio-group id="radiosTypeCalendar" v-model="typeCalendar" name="radioSubComponentTypeCalendar">
                     <b-form-radio @change.native="setTypeOfCalendar($event.target.value)" value="1">Monday</b-form-radio>
                     <b-form-radio @change.native="setTypeOfCalendar($event.target.value)" value="6">Sunday</b-form-radio>
                 </b-form-radio-group>
-            </b-form-group>
+
           </div>
-          <div class="col-6  align-middle text-right">
-            <b-form-group class="align-middle">
-                <b-form-radio-group id="radios" v-model="typeCalendar" name="radioSubComponent">
+          <div class="col-6  align-self-center text-right">
+
+                <b-form-radio-group id="radios" v-model="typeTime" name="radioSubComponent">
                     <b-form-radio @change.native="setTypeOfTime($event.target.value)" value="12">12</b-form-radio>
                     <b-form-radio @change.native="setTypeOfTime($event.target.value)" value="24">24</b-form-radio>
                 </b-form-radio-group>
-            </b-form-group>
+
           </div>
         </div>
 
@@ -113,14 +121,21 @@
         </div>
         <div class="dates row">
             <div class="col-2 col-day-week" v-for="blank in getfirstDayOfMonth()">&nbsp;</div>
-            <div class="col-2 col-day-week border" v-for="date in daysInMonth" :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear, 'chosen-day': choosenDate == date + ' ' + month + ' ' + year}" @click="chooseData(date, month, year)">
+            <div class="col-2 col-day-week border"
+             v-for="date in daysInMonth"
+             :class="{'current-day': date == initialDate && month == initialMonth && year == initialYear,
+             'chosen-day': choosenDate == date + ' ' + month + ' ' + year}"
+                  @click="chooseData(date, month, year)" >
                 <span>{{date}}</span>
 
                 <ul class="event">
                     <li v-for="item in getEventsByDay(year,monthNumber,date)">
-                      <a  @click="showModal(item.id)">
+                      <a v-if="userId == item.user_id || isAdmin " @click="showModal(item.id)" class="bg-success text-white">
                           {{item.starttime | moment(momentFilter) }} - {{item.endtime | moment(momentFilter)}}
                       </a>
+                      <span class="bg-warning text-white" v-else>
+                          {{item.starttime | moment(momentFilter) }} - {{item.endtime | moment(momentFilter)}}
+                      </span>
 
                       <!-- <router-link :to="{ name: 'EditEvent', params: {id: item.id} }">{{item.starttime | moment("H:mm") }} - {{item.endtime | moment("H:mm")}}</router-link>-->
                     </li>
@@ -131,6 +146,8 @@
     </div>
 
 
+
+
 </div>
 </div>
 </div>
@@ -138,6 +155,7 @@
 </template>
 
 <script>
+import NavBar from '@/components/NavBar'
 
 export default {
     name: 'Calendar',
@@ -150,10 +168,10 @@ export default {
             events: [],
             choosenDate: '',
             typeHour:12,
-            typeCalendar:localStorage.getItem('calendar-type'),
+            typeCalendar:localStorage.getItem('calendar-type') ? localStorage.getItem('calendar-type') : 1,
             event:{
               id:null,
-              recursion:null,
+              recursion:0,
               recursion_id:null,
               user_id:null,
               room_id:null,
@@ -167,12 +185,12 @@ export default {
             userEvent:{
               email:null
             },
-            recUpdate:null,
+            recUpdate:0,
             infoMessage:'',
             rooms:[],
             selectRoomId:null,
             typeTime: localStorage.getItem('time-type') ? localStorage.getItem('time-type') : 12,
-            momentFilter: localStorage.getItem('time-type') == 12 ? 'h:mm a' : 'H:mm'
+            momentFilter: localStorage.getItem('time-type') == 12 ? 'h:mm a' : 'H:mm',
         }
     },
     methods: {
@@ -224,6 +242,7 @@ export default {
             }
         }).then((response) => {
             this.infoMessage = response.data.message;
+            this.getEvents();
             //this.getRoom();
         })
       },
@@ -361,7 +380,12 @@ export default {
     },
 
     computed: {
-
+        isAdmin: function(){
+          return this.$store.state.isAdmin;
+        },
+        userId: function(){
+          return this.$store.state.userId;
+        },
 
         year: function() {
             var t = this;
@@ -424,6 +448,9 @@ export default {
           return this.$moment(String(value)).format('MM/DD/YYYY hh:mm');
         }
     }
+  },
+  components: {
+      NavBar
   }
 
 }
@@ -492,6 +519,7 @@ ul {
 
 .weekdays {
     border-bottom: 1px solid #9644b6;
+    background-color: #f0f8ff;
 }
 
 .weekdays li {

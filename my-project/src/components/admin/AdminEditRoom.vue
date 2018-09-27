@@ -2,7 +2,12 @@
 
 <template>
 
-<div class="container main-container">
+<div>
+  <div class="row">
+    <div class="col-12">
+    <nav-bar></nav-bar>
+    </div>
+  </div>
     <div class="row">
         <h1 class="title-current text-center">current room {{$route.params.id}}</h1>
     </div>
@@ -32,7 +37,7 @@
 </template>
 
 <script>
-
+import NavBar from '@/components/NavBar'
 export default {
     name: 'AdminEditRoom',
     data() {
@@ -75,6 +80,9 @@ export default {
     },
     created(){
       this.getRoom();
+    },
+    components: {
+        NavBar
     }
 }
 

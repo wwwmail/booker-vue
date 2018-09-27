@@ -3,13 +3,13 @@
 <template>
 
 <div class="hello">
-  <div class="row">
-    <div class="col-12">
-      <router-link :to="{ name: 'MainApp'}"><button class="btn">Back</button></router-link>
-    </div>
-  </div>
 
-    <div class="container  main-container register-container">
+      <div class="row">
+        <div class="col-12">
+          <nav-bar></nav-bar>
+        </div>
+      </div>
+
         <form class="form-horizontal" role="form">
             <div class="row">
                 <h2 class="title-register text-center">Add New Room</h2>
@@ -51,12 +51,13 @@
                 </div>
             </div>
         </form>
-    </div>
+
 </div>
 
 </template>
 
 <script>
+  import NavBar from '@/components/NavBar'
 export default {
     name: 'AddRoom',
     data() {
@@ -90,6 +91,9 @@ export default {
             });
         },
 
+    },
+    components: {
+        NavBar
     }
 }
 </script>

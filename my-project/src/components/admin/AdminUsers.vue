@@ -3,6 +3,11 @@
 <template>
 
 <div class="admin">
+  <div class="row">
+    <div class="col-12">
+    <nav-bar></nav-bar>
+    </div>
+  </div>
 
     <div>
         <!-- <b-button @click="showModal(id)">
@@ -28,7 +33,8 @@
         <div class="col-3">#</div>
         <div class="col-3">name</div>
         <div class="col-3">Email</div>
-        <div class="col-3"></div>
+        <div class="col-2">Is active</div>
+        <div class="col-1"></div>
     </div>
 
 
@@ -38,7 +44,8 @@
             <router-link :to="{ name: 'EditUser', params: {id:user.id} }">{{user.first_name}} {{user.last_name}}</router-link>
         </div>
         <div class="col-3">{{user.email}}</div>
-        <div class="col-3">
+        <div class="col-2">{{user.isActive}}</div>
+        <div class="col-1">
             <b-button @click="showModal(user.id)">
                 <icon name="trash-alt"></icon>
             </b-button>
@@ -47,7 +54,7 @@
 
     <div class="row">
         <div class="col-12">
-            <router-link :to="{ name: 'AddUser'}">
+            <router-link :to="{ name: 'AdminAddUser'}">
                 <button class="btn">Add new user</button>
             </router-link>
         </div>
@@ -61,9 +68,9 @@
 </template>
 
 <script>
-
+import NavBar from '@/components/NavBar'
 export default {
-    name: 'Admin',
+    name: 'AdminUsers',
     data() {
         return {
             users: [],
@@ -127,6 +134,10 @@ export default {
 
     created() {
         this.getUsers();
+    },
+
+    components: {
+        NavBar
     }
 
 }

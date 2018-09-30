@@ -2,69 +2,75 @@
 
 <template>
 
-<div class="hello">
+<div class="hello  main-container">
 
-        <form class="form-horizontal" role="form">
-            <div class="row">
-                <h2 class="title-login text-center">Login Form</h2>
+    <form class="form-horizontal" role="form">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <h2 class="title-login text-center">Login Form</h2>
+            <hr>
+          </div>
+          <div class="col-3"></div>
+        </div>
+        <h3>{{infoMessage}}</h3>
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2 field-label-responsive">
+                <label for="email">E-Mail Address</label>
             </div>
-            <h3>{{infoMessage}}</h3>
-
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-2 field-label-responsive">
-                    <label for="email">E-Mail Address</label>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <div class="input-group-addon" style="width: 2.6rem">
-                                <icon name="at"></icon>
-                            </div>
-                            <input type="text" name="email" v-model="login.email" class="form-control" id="email" placeholder="you@example.com" required autofocus>
+            <div class="col-4 ">
+                <div class="form-group">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon" style="width: 2.6rem">
+                            <icon name="at"></icon>
                         </div>
+                        <input type="text" name="email" v-model="login.email" class="form-control" id="email" placeholder="you@example.com" required autofocus>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
+            </div>
+            <div class="col-3">
+                <div class="form-control-feedback">
+                    <span class="text-danger align-middle">
                           <span v-if="errorEmail">  {{errorEmail}} </span>
-                        </span>
-                    </div>
+                    </span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-2 field-label-responsive">
-                    <label for="password">Password</label>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group has-danger">
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <div class="input-group-addon" style="width: 2.6rem">
-                                <icon name="key"></icon>
-                            </div>
-                            <input type="password" name="password" v-model="login.password" class="form-control" id="password" placeholder="Password" required>
+        </div>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2 field-label-responsive">
+                <label for="password">Password</label>
+            </div>
+            <div class="col-4">
+                <div class="form-group has-danger">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <div class="input-group-addon" style="width: 2.6rem">
+                            <icon name="key"></icon>
                         </div>
+                        <input type="password" name="password" v-model="login.password" class="form-control" id="password" placeholder="Password" required>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
+            </div>
+            <div class="col-3">
+                <div class="form-control-feedback">
+                    <span class="text-danger align-middle">
                           <span v-if="errorPassword">  {{errorPassword}} </span>
-                        </span>
-                    </div>
+                    </span>
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <span type="submit" v-on:click="sendForm()" class="btn btn-style btn-login">
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-4 text-right">
+                <span type="submit" v-on:click="sendForm()" class="btn btn-style btn-event bg-success text-white">
                         <icon name="plus"></icon> Login</span>
-                </div>
             </div>
-        </form>
+            <div class="col-3"></div>
+        </div>
+    </form>
 
 </div>
 
@@ -100,7 +106,7 @@ export default {
             }).then(function(response) {
                 return response.json();
             }).then((data) => {
-                console.log(data);
+
                 if (data.success == 'true') {
                     this.errorEmail = '';
                     this.errorPassword = '';
@@ -110,7 +116,6 @@ export default {
                 } else {
                     this.infoMessage = data.message;
                 }
-                console.log(333);
             });
         },
         validEmail: function(email) {

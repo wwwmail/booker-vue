@@ -14,9 +14,14 @@
   background-color: #fc6c2d;
 }
 
-ul.event li a,span{
-  padding: 2px;
+ul.event li a.event,span.event{
+  padding: 2px 7px;
   border-radius: 5px;
+
+}
+
+ul.event li{
+  margin-bottom: 5px;
 }
 
 .d-block .row  div{
@@ -45,6 +50,18 @@ input.form-control.bg-info {
 .btn-event {
   padding-left: 20px;
   padding-right: 20px;
+}
+.bg-secondary {
+    background-color: #7aa8d1 !important;
+}
+.bg-info {
+    background-color: #7baa67 !important;
+}
+.admin .row{
+  margin-bottom: 10px;
+}
+.item-button{
+  margin-top: 20px;
 }
 </style>
 

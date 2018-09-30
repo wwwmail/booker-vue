@@ -5,27 +5,24 @@
 <div class="hello main-container">
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-2">
             <router-link :to="{ name: 'MainApp'}">
                 <button class="btn">Back</button>
             </router-link>
         </div>
+        <div class="col-10 alert alert-info" v-if="infoMessage">{{infoMessage}}</div>
     </div>
 
 
     <form class="form-horizontal" role="form">
         <div class="row">
-          <div class="row-12">
-            <h2 class="title-event text-center">  Add Event</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="row-12">
-            <h5 class="text-red">{{infoMessage}}</h5>
-          </div>
+            <div class="row-12">
+                <h2 class="title-event text-center">  Add Event </h2>
+            </div>
         </div>
 
-        <div class="row"  v-if="isAdmin">
+
+        <div class="row" v-if="isAdmin">
             <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="name">Booked for</label>
@@ -57,7 +54,7 @@
 
 
         <div class="row">
-          <div class="col-1"></div>
+            <div class="col-1"></div>
             <div class="col-2 field-label-responsive">
                 <label for="name">Select Date</label>
             </div>
@@ -129,8 +126,7 @@
                             <option value="" disabled selected>minutes</option>
                             <option v-for="option in minutes" v-bind:value="option">{{option}}</option>
                         </select>
-
-                        <select v-if="hours[hour] != 24" v-model="selectedDateTime.formatStartTime" class="form-control">
+                        <select v-if="hour != 24" v-model="selectedDateTime.formatStartTime" class="form-control">
                             <option value="" disabled selected>AM/PM</option>
                             <option v-for="option in t12" v-bind:value="option">{{option}}</option>
                         </select>
@@ -140,15 +136,15 @@
             </div>
             <div class="col-3">
                 <div class="form-control-feedback">
-                  <span class="text-danger align-middle">
+                    <span class="text-danger align-middle">
                             <span v-if="errorValidate.startHour">  {{errorValidate.startHour}} </span>
-                  </span>
-                  <span class="text-danger align-middle">
+                    </span>
+                    <span class="text-danger align-middle">
                             <span v-if="errorValidate.startMinutes">  {{errorValidate.startMinutes}} </span>
-                  </span>
-                  <span class="text-danger align-middle">
+                    </span>
+                    <span class="text-danger align-middle">
                             <span v-if="errorValidate.formatStartTime">  {{errorValidate.formatStartTime}} </span>
-                  </span>
+                    </span>
                 </div>
             </div>
 
@@ -178,25 +174,27 @@
                             <option v-for="option in minutes" v-bind:value="option">{{option}}</option>
                         </select>
 
-                        <select v-if="hours[hour] != 24" v-model="selectedDateTime.formatEndTime" class="form-control">
+                        <select v-if="hour != 24" v-model="selectedDateTime.formatEndTime" class="form-control">
                             <option value="" disabled selected>AM/PM</option>
                             <option v-for="option in t12" v-bind:value="option">{{option}}</option>
                         </select>
+
 
                     </div>
                 </div>
             </div>
             <div class="col-3">
+
                 <div class="form-control-feedback">
-                  <span class="text-danger align-middle">
+                    <span class="text-danger align-middle">
                             <span v-if="errorValidate.endtHour">  {{errorValidate.endtHour}} </span>
-                  </span>
-                  <span class="text-danger align-middle">
+                    </span>
+                    <span class="text-danger align-middle">
                             <span v-if="errorValidate.endMinutes">  {{errorValidate.endMinutes}} </span>
-                  </span>
-                  <span class="text-danger align-middle">
+                    </span>
+                    <span class="text-danger align-middle">
                             <span v-if="errorValidate.formatEndTime">  {{errorValidate.formatEndTime}} </span>
-                  </span>
+                    </span>
                 </div>
             </div>
 
@@ -277,7 +275,7 @@
                         <b-form-group>
                             <b-form-radio-group id="radios2" v-model="reccuringType" name="radio2">
                                 <b-form-radio value="weekly">weeckly</b-form-radio>
-                                <b-form-radio value="be-weekly">be-weeckly</b-form-radio>
+                                <b-form-radio value="bi-weekly">bi-weeckly</b-form-radio>
                                 <b-form-radio value="monthly">monthly</b-form-radio>
                             </b-form-radio-group>
                         </b-form-group>
@@ -300,7 +298,7 @@
 
 
         <div class="row">
-          <div class="col-1"></div>
+            <div class="col-1"></div>
             <div class="col-8">
                 If weeckly or bi-weeckly, specify the number of weeks for it to keep reccuring. If monthly, specify the number of months. (If you choose "bi-weekly" and put in an odd number of weeks, the computer will round down.)
             </div>
@@ -308,32 +306,29 @@
         </div>
         <div class="row">
 
-            <div class="col-3">
+            <div class="col-6">
 
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-group has-danger">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <input type="text" name="password" v-model="reccuringValue" class="form-control"  placeholder="number">
+                        <input type="text" name="password" v-model="reccuringValue" class="form-control" placeholder="recursion_value">
                     </div>
                 </div>
             </div>
             <div class="col-3">
-                <div class="form-control-feedback">
-                    <span class="text-danger align-middle">
-                          <span v-if="errorPassword">  {{errorPassword}} </span>
-                    </span>
-                </div>
+
             </div>
             <div class="col-2"></div>
         </div>
 
         <div class="row">
-            <div class="col-4"></div>
-            <div class="col-8">
+            <div class="col-3"></div>
+            <div class="col-6 text-right">
                 <span v-on:click="sendForm()" class="btn btn-style btn-event bg-success text-white">
                         <icon name="plus"></icon> event</span>
             </div>
+            <div class="col-3"></div>
         </div>
     </form>
 
@@ -351,13 +346,13 @@ export default {
             selected: {
                 user: null,
             },
-            roomId:1,
+            roomId: 1,
             selectedDateTime: {
                 day: '',
                 month: '',
                 year: (new Date()).getFullYear(),
-                formatStartTime: '',
-                formatEndTime: '',
+                formatStartTime: localStorage.getItem('time-type') == 24 ? ' ' : '',
+                formatEndTime: localStorage.getItem('time-type') == 24 ? ' ' : '',
                 startHour: '',
                 startMinutes: '',
                 endHour: '',
@@ -365,17 +360,15 @@ export default {
             },
             reccuring: 0,
             reccuringType: null,
-            reccuringValue:null,
-
-
-
+            reccuringValue: null,
 
             currentDate: this.$moment(),
-            monthLabels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+            monthLabels: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
             years: [2018, 2019],
             hours: {
-                12: ['1','2','3','4','5','6','7','8','9','10','11','12'],
-                24: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','00']
+                12: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                //24: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','00']
+                24: ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
             },
 
             t12: ['AM', 'PM'],
@@ -383,24 +376,21 @@ export default {
 
             event: {
                 description: '',
-                error:null,
+                error: null,
             },
-            errorFlag:false,
-            //date
-
-            //date
+            errorFlag: false,
 
             errorValidate: {
                 user: null,
                 year: null,
                 month: null,
                 day: null,
-                startHour:null,
-                startMinutes:null,
-                formatStartTime:null,
-                endHour:null,
-                endMinutes:null,
-                formatEndTime:null,
+                startHour: null,
+                startMinutes: null,
+                formatStartTime: null,
+                endHour: null,
+                endMinutes: null,
+                formatEndTime: null,
 
             },
             errorSelectUser: null,
@@ -414,10 +404,10 @@ export default {
         }
     },
     methods: {
-      setHours(){
-        this.hour = localStorage.getItem('time-type') ? localStorage.getItem('time-type') : 12
-      },
-        getUsers() {
+        setHours() {
+                this.hour = localStorage.getItem('time-type') ? localStorage.getItem('time-type') : 12
+            },
+            getUsers() {
                 let token = localStorage.getItem('user-token') || '';
 
                 this.axios.get(this.$config.API + '/users', {
@@ -430,89 +420,106 @@ export default {
                 })
             },
 
-            validateForm(){
-              let error = false;
-              if (!this.selected.user && this.isAdmin) {
-                  this.errorValidate.user = 'Please select user is required';
-                  error = true;
-              }else {
-                this.errorValidate.user = null;
-              }
-
-              for (var prop in this.selectedDateTime) {
-                if(!this.selectedDateTime[prop]){
-                  this.errorValidate[prop] = prop + ' is required';
-                  error = true;
-                }else{
-                    this.errorValidate[prop] = null;
+            validateForm() {
+                let error = false;
+                if (!this.selected.user && this.isAdmin) {
+                    this.errorValidate.user = 'Please select user is required';
+                    error = true;
+                } else {
+                    this.errorValidate.user = null;
                 }
-              }
 
-              if (!this.event.description) {
-                  this.event.error = 'description is required';
-                  error = true;
-              }else {
-                this.event.error = null;
-              }
-              return error;
+                for (var prop in this.selectedDateTime) {
+                    if (!this.selectedDateTime[prop]) {
+
+                        this.errorValidate[prop] = prop + ' is required';
+                        error = true;
+                    } else {
+                        this.errorValidate[prop] = null;
+                    }
+                }
+
+                if (!this.event.description) {
+                    this.event.error = 'description is required';
+                    error = true;
+                } else {
+                    this.event.error = null;
+                }
+                return error;
 
             },
 
 
 
             sendForm: function() {
-              if(this.validateForm()){
-                return false;
-              }else{
+                if (this.validateForm()) {
+                    return false;
+                } else {
 
-                 let token = localStorage.getItem('user-token') || '';
-                 let id = this.$route.params.id;
-                 this.axios(this.$config.API + '/events', {
-                     method: "POST",
-                     headers: {
-                         'Authorization': 'Bearer ' + token,
-                     },
-                     data:{
-                       user_id: this.selected.user,
-                       room_id: this.$route.params.id,
-                       recursion:this.reccuring,
-                       description: this.event.description,
-                       date: this.selectedDateTime.year +"-" + this.selectedDateTime.month+'-'+this.selectedDateTime.day,
-                       starttime:this.selectedDateTime.year +"-" + this.selectedDateTime.month+'-'+this.selectedDateTime.day + ' ' + this.selectedDateTime.startHour + ':' + this.selectedDateTime.startMinutes + ' ' + this.selectedDateTime.formatStartTime,
-                       endtime: this.selectedDateTime.year +"-" + this.selectedDateTime.month+'-'+this.selectedDateTime.day + ' ' + this.selectedDateTime.endHour + ':' + this.selectedDateTime.endMinutes + ' ' + this.selectedDateTime.formatEndTime,
-                       recursion_type: this.reccuringType,
-                       recursion_value: this.reccuringValue,
+                    let token = localStorage.getItem('user-token') || '';
+                    let id = this.$route.params.id;
+                    if(this.reccuringType != null){
+                      this.reccuring = 1;
+                    }
+                    this.axios(this.$config.API + '/events', {
+                        method: "POST",
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                        },
+                        data: {
+                            user_id: this.selected.user,
+                            room_id: this.$route.params.id,
+                            recursion: this.reccuring,
+                            description: this.event.description,
+                            date: this.selectedDateTime.year + "-" + this.selectedDateTime.month + '-' + this.selectedDateTime.day,
+                            starttime: this.selectedDateTime.year + "-" + this.selectedDateTime.month + '-' + this.selectedDateTime.day + ' ' + this.selectedDateTime.startHour + ':' + this.selectedDateTime.startMinutes + ' ' + this.selectedDateTime.formatStartTime,
+                            endtime: this.selectedDateTime.year + "-" + this.selectedDateTime.month + '-' + this.selectedDateTime.day + ' ' + this.selectedDateTime.endHour + ':' + this.selectedDateTime.endMinutes + ' ' + this.selectedDateTime.formatEndTime,
+                            recursion_type: this.reccuringType,
+                            recursion_value: this.reccuringValue,
 
 
-                     }
-                 }).then((response) => {
-                   this.infoMessage = response.data.message;
-                   console.log(response);
-                    //this.getBook();
-                 })
-              }
+                        }
+                    }).then((response) => {
+                        this.infoMessage = response.data.message;
+                    })
+                }
             },
             validEmail: function(email) {
                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(email);
+            },
+            chooseSelectedDate(){
+              this.selectedDateTime.year = this.$store.state.yearChoose;
+              this.selectedDateTime.month = this.$store.state.monthChoose;
+              this.selectedDateTime.day = this.$store.state.dateChoose;
             }
     },
     filters: {
 
     },
     computed: {
+      choosenDate(){
+        return this.$store.state.dateChoose;
+      },
+      choosenMonth(){
+        return this.$store.state.monthChoose;
+      },
+      choosenYear(){
+        return this.$store.state.yearChoose;
+      },
         daysInMonth() {
-            let d = new Date(this.selectedDateTime.year, this.selectedDateTime.month, 0);
-            return d.getDate();
-        },
+                let d = new Date(this.selectedDateTime.year, this.selectedDateTime.month, 0);
+                return d.getDate();
+            },
 
-        isAdmin(){
-          return this.$store.state.isAdmin;
-        }
+            isAdmin() {
+                return this.$store.state.isAdmin;
+            }
     },
     created() {
         this.setHours();
         this.getUsers();
+        this.chooseSelectedDate();
     }
 }
 

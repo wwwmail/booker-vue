@@ -3,11 +3,11 @@
 <template>
 
 <div class="admin">
-  <div class="row">
-    <div class="col-12">
-    <nav-bar></nav-bar>
+    <div class="row">
+        <div class="col-12">
+            <nav-bar></nav-bar>
+        </div>
     </div>
-  </div>
 
     <div>
         <!-- <b-button @click="showModal(id)">
@@ -22,42 +22,56 @@
         </b-modal>
     </div>
 
-    <h1>Admin</h1>
-
     <div class="row">
-        <div class="col-12">{{infoMessage}}</div>
+      <div class="col-6">
+        <h1>Admin</h1>
+      </div>
+      <div class="col-6 text-right">
+            <router-link :to="{ name: 'AdminAddUser'}">
+                <button class="btn btn-success">Add new user</button>
+            </router-link>
+
+      </div>
+    </div>
+    <div class="row" v-if="infoMessage">
+        <div class="col-12 alert alert-info">{{infoMessage}}</div>
     </div>
 
 
-    <div class="row">
-        <div class="col-3">#</div>
-        <div class="col-3">name</div>
-        <div class="col-3">Email</div>
+    <div class="row text-center">
+        <div class="col-2">#</div>
+        <div class="col-2">name</div>
+        <div class="col-2">Email</div>
         <div class="col-2">Is active</div>
-        <div class="col-1"></div>
+        <div class="col-2"></div>
+        <div class="col-2"></div>
     </div>
 
 
-    <div class="row" v-for="(user, index) in users ">
-        <div class="col-3">{{index+1}}</div>
-        <div class="col-3">
-            <router-link :to="{ name: 'EditUser', params: {id:user.id} }">{{user.first_name}} {{user.last_name}}</router-link>
+    <div class="row text-center" v-for="(user, index) in users ">
+        <div class="col-2">{{index+1}}</div>
+        <div class="col-2">
+            <router-link :to="{ name: 'AdminEditUser', params: {id:user.id} }">{{user.first_name}} {{user.last_name}}</router-link>
         </div>
-        <div class="col-3">{{user.email}}</div>
-        <div class="col-2">{{user.isActive}}</div>
-        <div class="col-1">
+        <div class="col-2">{{user.email}}</div>
+        <div class="col-2">
+          <span v-if="user.isActive == 1">yes</span>
+          <span v-else>no</span>
+        </div>
+        <div class="col-2">
             <b-button @click="showModal(user.id)">
                 <icon name="trash-alt"></icon>
             </b-button>
         </div>
+        <div class="col-2">
+            <span class="btn btn-success" @click="setActiveUser(user)">
+            set active
+        </span>
+        </div>
     </div>
 
     <div class="row">
-        <div class="col-12">
-            <router-link :to="{ name: 'AdminAddUser'}">
-                <button class="btn">Add new user</button>
-            </router-link>
-        </div>
+
     </div>
 
 
@@ -68,6 +82,7 @@
 </template>
 
 <script>
+
 import NavBar from '@/components/NavBar'
 export default {
     name: 'AdminUsers',
@@ -90,6 +105,22 @@ export default {
                 let id = this.id;
                 this.deleteUser(id);
                 this.$refs.myModalRef.hide()
+            },
+            setActiveUser(user) {
+                let token = localStorage.getItem('user-token') || '';
+                user.is_active = 1;
+                this.axios(this.$config.API + '/users/' + user.id, {
+                    method: "PUT",
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    },
+                    data: {
+                        data: user,
+                    }
+                }).then((response) => {
+                    this.infoMessage = response.data.message;
+                    this.getUsers();
+                })
             },
             test() {
                 alert('df');
@@ -120,7 +151,6 @@ export default {
                         'Authorization': 'Bearer ' + token,
                     }
                 }).then((response) => {
-                    console.log(response);
                     this.users = response.data;
 
                 })

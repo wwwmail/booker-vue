@@ -9,9 +9,6 @@ const vuexConfigs = {
 //  API: 'http://192.168.0.15/~user4/php7/booker'
 }
 
-
-
-
 export default  new Vuex.Store({
   state:{
     isAuth: false,
@@ -19,6 +16,9 @@ export default  new Vuex.Store({
     isAdmin: false,
 
     idUser:0,
+    dateChoose:'',
+    monthChoose:'',
+    yearChoose:'',
   },
   getters: {
    booksList(state) {
@@ -41,21 +41,29 @@ export default  new Vuex.Store({
       Vue.axios.get(vuexConfigs.API + '/auth', {
               headers: {'Authorization': 'Bearer ' + token,}
           }).then((response) => {
-            console.log(response);
+
             if(response.data.success && response.data.success == 'true'){
 
               if(response.data.admin == true){
 
                   commit('set', {type: 'isAdmin', items: true});
               }
-
                 commit('set', {type: 'isAuth', items: true});
                 commit('set', {type:'userId', items:response.data.id })
             }
 
       })
     },
+    setChoosenDate({commit}, date){
+      commit('set', {type:'dateChoose', items: date});
+    },
+    setChoosenMonth({commit}, month){
+      commit('set', {type:'monthChoose', items: month});
 
+    },
+    setChoosenYear({commit}, year){
+      commit('set', {type:'yearChoose', items: year});
+    },
     setAuth({commit}){
       commit('set' ,{type: 'isAuth', items: true});
     },

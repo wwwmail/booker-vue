@@ -13,7 +13,12 @@
           </div>
           <div class="col-3"></div>
         </div>
-        <h3>{{infoMessage}}</h3>
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-8 text-center alert alert-info" v-if="infoMessage">{{infoMessage}}</div>
+          <div class="col-2"></div>
+        </div>
+
 
         <div class="row">
             <div class="col-3"></div>

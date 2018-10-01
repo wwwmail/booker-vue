@@ -1,7 +1,7 @@
 <style>
 
 .padding-0{
-  padding: 0;
+  padding: 0 !important;
 }
 .rooms{
   background: #b4b4b4;
@@ -17,7 +17,7 @@
 ul.event li a.event,span.event{
   padding: 2px 7px;
   border-radius: 5px;
-
+  cursor: pointer;
 }
 
 ul.event li{

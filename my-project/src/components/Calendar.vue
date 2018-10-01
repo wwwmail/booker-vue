@@ -7,6 +7,57 @@
             <nav-bar></nav-bar>
         </div>
     </div>
+    <b-modal ref="myModalRefU" hide-footer>
+        <div v-if="infoMessage" class="alert alert-info">{{infoMessage}}</div>
+        <div class="d-block text-center">
+            <div class="row">
+                <div class="col-12">
+                    <h3>B.B details </h3></div>
+            </div>
+
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-2 bg-secondary">when</div>
+                <div class="col-4 bg-info">
+                    <span class="form-control bg-info  text-white" > {{event.newStartTime}}</span>
+                    </div>
+                <div class="col-4 bg-info">
+                    <span class="form-control bg-info  text-white" >{{event.newEndTime}}</span>
+                </div>
+                <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-2 bg-secondary">who</div>
+                <div class="col-8 bg-info"> {{userEvent.first_name}} {{userEvent.last_name}} </div>
+
+                <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-2 bg-secondary">notes:</div>
+                <div class="col-8 bg-info">
+                    <span class="form-control bg-info text-white" >{{event.description}}</span>
+                </div>
+
+                <div class="col-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-2 bg-secondary">submited:</div>
+                <div class="col-8 bg-info"> {{event.created}} </div>
+
+                <div class="col-1"></div>
+            </div>
+
+
+
+        </div>
+
+
+    </b-modal>
     <b-modal ref="myModalRef" hide-footer>
         <div v-if="infoMessage" class="alert alert-info">{{infoMessage}}</div>
         <div class="d-block text-center">
@@ -143,7 +194,7 @@
                         <a v-if="userId == item.user_id || isAdmin " @click="showModal(item.id)" class="bg-success text-white event">
                           {{item.starttime | moment(momentFilter) }} - {{item.endtime | moment(momentFilter)}}
                       </a>
-                        <span class="bg-warning text-white event" v-else>
+                        <span @click=showModalU(item.id) class="bg-warning text-white event" v-else>
                           {{item.starttime | moment(momentFilter) }} - {{item.endtime | moment(momentFilter)}}
                       </span>
 
@@ -173,7 +224,7 @@ export default {
     data() {
         return {
             today: this.$moment(),
-            dateContext: this.$moment().startOf('week').isoWeekday(1),
+            dateContext: this.$moment(),//this.$moment().startOf('week').isoWeekday(1),
             //days: ['SUN', 'MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT'],
             //days2: ['MON', 'TUE', 'WEN', 'THU', 'FRI', 'SUT','SUN'],
             events: [],
@@ -206,9 +257,12 @@ export default {
     },
     methods: {
         selectRoom(id) {
-
+              if(id == null){
+                id =1;
+              }
                 this.selectRoomId = id;
                 this.getEvents();
+
             },
             getRooms() {
                 let token = localStorage.getItem('user-token') || '';
@@ -219,7 +273,8 @@ export default {
                 }).then((response) => {
                     this.rooms = response.data;
 
-                    this.selectRoomId = response.data[0].id;
+                    this.selectRoom(response.data[0].id);
+                    this.getEvents();
 
                 })
             },
@@ -236,8 +291,9 @@ export default {
                         recursion: this.recUpdate,
                     }
                 }).then((response) => {
+                  this.getEvents();
                     this.infoMessage = response.data.message;
-                    this.getEvents();
+
                 })
             },
             updateEvent(id) {
@@ -253,8 +309,9 @@ export default {
                         recursion: this.recUpdate,
                     }
                 }).then((response) => {
+                  this.getEvents();
                     this.infoMessage = response.data.message;
-                    this.getEvents();
+                    //this.getEvents();
                     //this.getRoom();
                 })
             },
@@ -269,6 +326,15 @@ export default {
             },
             hideModal() {
                 this.$refs.myModalRef.hide()
+            },
+            showModalU(id) {
+                this.infoMessage='';
+                this.getEventById(id);
+
+                this.$refs.myModalRefU.show()
+            },
+            hideModalU() {
+                this.$refs.myModalRefU.hide()
             },
             getUserById(id) {
                 let token = localStorage.getItem('user-token') || '';
@@ -311,7 +377,6 @@ export default {
                     }
                 }).then((response) => {
                     this.events = response.data;
-
                 })
             },
             getEventById(id) {
@@ -391,7 +456,7 @@ export default {
     },
     created: function() {
         this.getRooms();
-        this.getEvents();
+        //this.getEvents();
 
     },
 
